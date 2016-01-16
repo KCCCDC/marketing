@@ -1,8 +1,7 @@
 <div class="navbar">
     <ul class="nav">
         <li><a href="index.asp">Home</a></li>
-        <li><a href="#">Blah</a></li>
-        <li><a href="#">Blah</a></li>
-        <li><a href="login.asp">Login</a></li>
+        <li><a href="histroy.asp">Our History</a></li>
+        <li><a href="careers.asp">Careers</a></li>
     </ul>
 </div>
