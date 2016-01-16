@@ -9,7 +9,7 @@
 <%
 <!--#include file="navbar.inc"-->
 %>
-<h1>Welcome to our company's website!</h1>
+<h1>Welcome to National Commodity D Corporation!</h1>
 <p>Look at how pretty it is</p>
 
 <h2>Recent News</h2>
