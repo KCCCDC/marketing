@@ -10,9 +10,6 @@
 <!--#include file="navbar.inc"-->
 
 
-
-
-
 <!--#inlude file="footer.inc"-->
 
 </body>
