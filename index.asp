@@ -18,9 +18,9 @@
 <% 
 Dim objShell
 Set objShell = CreateObject( "WScript.Shell" )
-'objShell.Exec "cmd /K cd C:\Python27 & python C:\Python27\opc_get_values.py > values.txt"
+objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & python opc_get_values.py > values.txt"
 Set f = CreateObject("Scripting.FileSystemObject" )            
-Set f = f.OpenTextFile("C:\Python27\values.txt")
+Set f = f.OpenTextFile("C:\inetpub\wwwroot\marketing\values.txt")
 s=Split(f.read(100), vbCrLf)
 response.write("<input type='hidden' id='relay1_breaker' value='" & s(0) & "'>" & vbCrLf)
 response.write("<input type='hidden' id='relay1_load' value='" & s(1) & "'>" & vbCrLf)
