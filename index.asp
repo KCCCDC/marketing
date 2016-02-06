@@ -1,3 +1,4 @@
+<%@ LANGUAGE = Python%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,11 +19,19 @@
 <% 
 Dim objShell
 Set objShell = CreateObject( "WScript.Shell" )
-For i=6 To 0 Step -1
-    objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & move /y values" & i - 1 & ".txt values" & i & ".txt"
+For i=6 To 1 Step -1
+    response.write("move values" & i - 1 & ".txt to values" & i & ".txt ")
+    objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & copy /y values" & i - 1 & ".txt values" & i & ".txt"
+    'Seriously? http://stackoverflow.com/a/13099520
+    CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
+    & 1, 0, True
 Next
 
-objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & C:\Python27\python opc_get_values.py > values0.txt"
+'Seriously? http://stackoverflow.com/a/13099520
+CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
+    & 1, 0, True
+response.write("Getting SCADA")
+objShell.Run "cmd /K cd C:\inetpub\wwwroot\marketing & C:\Python27\python opc_get_values.py > values0.txt"
 'Seriously? http://stackoverflow.com/a/13099520
 CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
     & 3, 0, True
