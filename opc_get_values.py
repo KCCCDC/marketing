@@ -16,6 +16,7 @@ pump2=paths['pump2']
 pump3=paths['pump3']
 pump4=paths['pump4']
 pump5=paths['pump5']
+wtc=paths['wtc']
 
 xda_relay1 = XDAClient(OPCServerAddress=relay1,ReturnErrorText=True)
 xda_relay2 = XDAClient(OPCServerAddress=relay2,ReturnErrorText=True)
@@ -27,6 +28,7 @@ xda_pump2 = XDAClient(OPCServerAddress=pump2,ReturnErrorText=True)
 xda_pump3 = XDAClient(OPCServerAddress=pump3,ReturnErrorText=True)
 xda_pump4 = XDAClient(OPCServerAddress=pump4,ReturnErrorText=True)
 xda_pump5 = XDAClient(OPCServerAddress=pump5,ReturnErrorText=True)
+xda_wtc = XDAClient(OPCServerAddress=wtc,ReturnErrorText=True)
 
 print xda_relay1.Read([ItemContainer(ItemName='relay1_breaker')])[0][0].Value
 print xda_relay1.Read([ItemContainer(ItemName='relay1_load')])[0][0].Value
@@ -69,3 +71,5 @@ print xda_pump5.Read([ItemContainer(ItemName='PS5_PUMP_0')])[0][0].Value
 print xda_pump5.Read([ItemContainer(ItemName='PS5_PUMP_1')])[0][0].Value
 print xda_pump5.Read([ItemContainer(ItemName='PS5_VALVE_0')])[0][0].Value
 print xda_pump5.Read([ItemContainer(ItemName='PS5_VALVE_1')])[0][0].Value
+
+print xda_wtc.Read([ItemContainer(ItemName='H20_QUALITY')])[0][0].Value

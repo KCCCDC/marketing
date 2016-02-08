@@ -15,15 +15,20 @@
 <p>There's nothing here yet!</p>
 
 <h2>Real-Time Data</h2>
-    <h3>Power:</h3>
+    Our qualified technicians and engineers work 'round the clock in order to provide you with the best utility service possible. Take a look at the statistics below to see how reliable our services are!
+<div class="g">
+<p><h3>Power:</h3>Left: Relay 1/2 load/flow; Right: Generator 1/2 generation</p>
 <canvas id="relay_chart" width="400" height="400"></canvas>
 <canvas id="gen_chart" width="400" height="400"></canvas>
-<h3>Reliability:</h3>
+</div>
+<div class="g">
+<p><h3>Reliability:</h3>Left: Active power breakers; Right: Active pump system components</p>
 <canvas id="breaker_chart" width="400" height="400"></canvas>
-<canvas id="pump_chart" width="400" height="400"></canvas>
-<h3>Quality:</h3>
-<canvas id="wtc_chart" width="400" height="400"></canvas>
-<br /><br /><br /><br /><br /><br />
+<canvas id="pump_chart" width="400" height="400"></canvas></div>
+<div class="g">
+<h3>Quality:</h3></p>
+<canvas id="wtc_chart" width="400" height="400"></canvas></div>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
 <% 
 Dim objShell
@@ -60,14 +65,14 @@ For i=1 To 11
         'I guess 100 is a good length? 
         s=Split(f.read(100), vbCrLf)
         up = up + CInt(s(0)) + CInt(s(3)) + CInt(s(6))
-        pump_health = pump_health + CInt(s(10)) + CInt(s(11)) + CInt(s(12)) + CInt(s(13)) + CInt(s(14)) + CInt(s(15)) + CInt(s(16)) + CInt(s(17)) + CInt(s(18)) + CInt(s(19)) + CInt(s(20)) + CInt(s(21)) + CInt(s(22)) + CInt(s(23)) + CInt(s(24)) + CInt(s(25)) + CInt(s(26)) + CInt(s(27)) + CInt(s(28))
+        pump_health = pump_health + CInt(s(10)) + CInt(s(11)) + CInt(s(12)) + CInt(s(13)) + CInt(s(14)) + CInt(s(15)) + CInt(s(16)) + CInt(s(17)) + CInt(s(18)) + CInt(s(19)) + CInt(s(20)) + CInt(s(21)) + CInt(s(22)) + CInt(s(23)) + CInt(s(24)) + CInt(s(25)) + CInt(s(26)) + CInt(s(27)) + CInt(s(28)) + CInt(s(29))
         response.write("<input type='hidden' id='relay1_load" & i & "' value='" & s(1) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & s(2) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & s(5) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & s(7) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf) 
-        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & s(29) & "'>" & vbCrLf)      
+        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & s(30) & "'>" & vbCrLf)      
     Else
         response.write("<input type='hidden' id='relay1_load" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & 0 & "'>" & vbCrLf)
@@ -75,13 +80,13 @@ For i=1 To 11
         response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & 0 & "'>" & vbCrLf & vbCrLf)
-        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & s(29) & "'>" & vbCrLf)
+        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & 0 & "'>" & vbCrLf)
     End if
 Next
-response.write("<input type='hidden' id='breaker_up' value='" & 100 * up / 33 & "'>" & vbCrLf)
-response.write("<input type='hidden' id='breaker_down' value='" & 100 * (33 - up) / 33 & "'>" & vbCrLf)
-response.write("<input type='hidden' id='pump_health' value='" & 100 * pump_health / 209 & "'>" & vbCrLf)
-response.write("<input type='hidden' id='pump_unhealth' value='" & 100 * (209 - pump_health) / 209 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='breaker_up' value='" & 100 * up / 30 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='breaker_down' value='" & 100 * (30 - up) / 30 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='pump_health' value='" & 100 * pump_health / 200 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='pump_unhealth' value='" & 100 * (200 - pump_health) / 200 & "'>" & vbCrLf)
 response.write("<script>" & vbCrLf)
 %>
 
