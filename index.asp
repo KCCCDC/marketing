@@ -15,9 +15,11 @@
 <p>There's nothing here yet!</p>
 
 <h2>Real-Time Data</h2>
-
+    <h3>Power:</h3>
 <canvas id="relay_chart" width="400" height="400"></canvas>
 <canvas id="gen_chart" width="400" height="400"></canvas>
+<h3>Reliability:</h3>
+<canvas id="breaker_chart" width="400" height="400"></canvas>
 <br /><br /><br /><br /><br /><br />
 
 <% 
@@ -43,27 +45,27 @@ CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
 
 
 <%
+up=CInt(0)
 For i=0 To 10   
     filename = "C:\inetpub\wwwroot\marketing\values" & i & ".txt"
     Set f = CreateObject("Scripting.FileSystemObject" )
     Set fs = f.GetFile(filename)
     'Make sure the file isn't empty to avoid errors
     if fs.Size > 0 Then
-    Set f = f.OpenTextFile(filename)   
-    'I guess 100 is a good length? 
-    s=Split(f.read(100), vbCrLf)
-    response.write("<input type='hidden' id='relay1_breaker" & i & "' value='" & s(0) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='relay1_load" & i & "' value='" & s(1) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & s(2) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='relay2_breaker" & i & "' value='" & s(3) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & s(5) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='gen1_breaker" & i & "' value='" & s(10) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & s(7) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='gen2_breaker" & i & "' value='" & s(8) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf & vbCrLf)
+        Set f = f.OpenTextFile(filename)   
+        'I guess 100 is a good length? 
+        s=Split(f.read(100), vbCrLf)
+        up = up + CInt(s(0)) + CInt(s(3)) + CInt(s(6))
+        response.write("<input type='hidden' id='relay1_load" & i & "' value='" & s(1) & "'>" & vbCrLf)
+        response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & s(2) & "'>" & vbCrLf)
+        response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
+        response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & s(5) & "'>" & vbCrLf)
+        response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & s(7) & "'>" & vbCrLf)
+        response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf & vbCrLf)
     End if
 Next
+response.write("<input type='hidden' id='breaker_up' value='" & up / 33 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='breaker_down' value='" & (33 - up) / 33 & "'>" & vbCrLf)
 response.write("<script>" & vbCrLf)
 %>
 
@@ -163,11 +165,28 @@ For i=0 To 10
 Next
 %>
     ]}]}
+var breaker_data = [
+    {
+        value: document.getElementById('breaker_up').value,
+        color: "#0005FF",
+        highlight: "#A6A6FF",
+        label: "On"
+    },
+     {
+        value: document.getElementById('breaker_down').value,
+        color: "#FF0000",
+        highlight: "#FFA6A6",
+        label: "Off"
+    }
+]
+
 Chart.defaults.global.scaleFontColor = "#FFFFFF";
 Chart.defaults.global.scaleLineColor = "rgba(255,255,255,.5)";
-var relay_chart = new Chart(document.getElementById("relay_chart").getContext("2d")).Line(relay_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
-var gen_chart = new Chart(document.getElementById("gen_chart").getContext("2d")).Line(gen_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
+new Chart(document.getElementById("relay_chart").getContext("2d")).Line(relay_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
+new Chart(document.getElementById("gen_chart").getContext("2d")).Line(gen_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
+new Chart(document.getElementById("breaker_chart").getContext("2d")).Doughnut(breaker_data);
 </script>
+
 <!--#include file="footer.inc"-->
 </body>
 </html>
