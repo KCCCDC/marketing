@@ -19,7 +19,6 @@
 Dim objShell
 Set objShell = CreateObject( "WScript.Shell" )
 For i=6 To 1 Step -1
-    response.write("move values" & i - 1 & ".txt to values" & i & ".txt ")
     objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & copy /y values" & i - 1 & ".txt values" & i & ".txt"
     'Seriously? http://stackoverflow.com/a/13099520
     CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
@@ -29,19 +28,19 @@ Next
 'Seriously? http://stackoverflow.com/a/13099520
 CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
     & 1, 0, True
-response.write("Getting SCADA")
-objShell.Run "cmd /K cd C:\inetpub\wwwroot\marketing & C:\Python27\python opc_get_values.py > values0.txt"
+objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & C:\Python27\python opc_get_values.py > values0.txt"
 'Seriously? http://stackoverflow.com/a/13099520
 CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
     & 3, 0, True
 
 For i=0 To 6   
+    filename = "C:\inetpub\wwwroot\marketing\values" & i & ".txt"
     Set f = CreateObject("Scripting.FileSystemObject" )
-    Set fs = f.GetFile("C:\inetpub\wwwroot\marketing\values" & i & ".txt")
-    response.write(fs.Size & vbCrLf)
+    Set fs = f.GetFile(filename)
+    'Make sure the file isn't empty to avoid errors
     if fs.Size > 0 Then
-    response.write("values" & i & ".txt")
-    Set f = f.OpenTextFile("C:\inetpub\wwwroot\marketing\values" & i & ".txt")    
+    Set f = f.OpenTextFile(filename)   
+    'I guess 100 is a good length? 
     s=Split(f.read(100), vbCrLf)
     response.write("<input type='hidden' id='relay1_breaker" & i & "' value='" & s(0) & "'>" & vbCrLf)
     response.write("<input type='hidden' id='relay1_load" & i & "' value='" & s(1) & "'>" & vbCrLf)
