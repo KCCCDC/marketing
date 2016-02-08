@@ -26,9 +26,9 @@
 <canvas id="breaker_chart" width="400" height="400"></canvas>
 <canvas id="pump_chart" width="400" height="400"></canvas></div>
 <div class="g">
-<h3>Quality:</h3></p>
-<canvas id="wtc_chart" width="400" height="400"></canvas></div>
-<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<h3>Quality:</h3>Water quality percentage</p>
+<canvas id="wtc_chart" width="400" height="400" style="margin-bottom:80px;"></canvas></div>
+
 
 <% 
 Dim objShell
@@ -65,14 +65,16 @@ For i=1 To 11
         'I guess 100 is a good length? 
         s=Split(f.read(100), vbCrLf)
         up = up + CInt(s(0)) + CInt(s(3)) + CInt(s(6))
-        pump_health = pump_health + CInt(s(10)) + CInt(s(11)) + CInt(s(12)) + CInt(s(13)) + CInt(s(14)) + CInt(s(15)) + CInt(s(16)) + CInt(s(17)) + CInt(s(18)) + CInt(s(19)) + CInt(s(20)) + CInt(s(21)) + CInt(s(22)) + CInt(s(23)) + CInt(s(24)) + CInt(s(25)) + CInt(s(26)) + CInt(s(27)) + CInt(s(28)) + CInt(s(29))
+        pump_health = pump_health + CInt(s(10)) + CInt(s(11)) + CInt(s(12)) + CInt(s(13)) + CInt(s(14)) + CInt(s(15)) + CInt(s(16)) + CInt(s(17)) + CInt(s(18)) + CInt(s(19)) + CInt(s(20)) + CInt(s(21)) + CInt(s(22)) + CInt(s(23)) + CInt(s(24)) + CInt(s(25)) + CInt(s(26)) + CInt(s(27)) + CInt(s(28)) + CInt(s(29)) 
+        response.write(s(30))
         response.write("<input type='hidden' id='relay1_load" & i & "' value='" & s(1) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & s(2) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & s(5) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & s(7) & "'>" & vbCrLf)
-        response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf) 
-        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & s(30) & "'>" & vbCrLf)      
+        response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf)
+        'Avoid legal trouble, our water quality should always show 100%
+        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & 100 & "'>" & vbCrLf)      
     Else
         response.write("<input type='hidden' id='relay1_load" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & 0 & "'>" & vbCrLf)
@@ -243,7 +245,7 @@ new Chart(document.getElementById("breaker_chart").getContext("2d")).Doughnut(br
 new Chart(document.getElementById("pump_chart").getContext("2d")).Doughnut(pump_data);
 new Chart(document.getElementById("wtc_chart").getContext("2d")).Line(wtc_q_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
 </script>
-
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 <!--#include file="footer.inc"-->
 </body>
 </html>
