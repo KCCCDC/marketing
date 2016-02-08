@@ -21,6 +21,8 @@
 <h3>Reliability:</h3>
 <canvas id="breaker_chart" width="400" height="400"></canvas>
 <canvas id="pump_chart" width="400" height="400"></canvas>
+<h3>Quality:</h3>
+<canvas id="wtc_chart" width="400" height="400"></canvas>
 <br /><br /><br /><br /><br /><br />
 
 <% 
@@ -64,7 +66,8 @@ For i=1 To 11
         response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & s(5) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & s(7) & "'>" & vbCrLf)
-        response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf)       
+        response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf) 
+        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & s(29) & "'>" & vbCrLf)      
     Else
         response.write("<input type='hidden' id='relay1_load" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & 0 & "'>" & vbCrLf)
@@ -72,6 +75,7 @@ For i=1 To 11
         response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & 0 & "'>" & vbCrLf)
         response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & 0 & "'>" & vbCrLf & vbCrLf)
+        response.write("<input type='hidden' id='wtc_q" & i & "' value='" & s(29) & "'>" & vbCrLf)
     End if
 Next
 response.write("<input type='hidden' id='breaker_up' value='" & 100 * up / 33 & "'>" & vbCrLf)
@@ -206,6 +210,25 @@ var pump_data = [
         label: "% Pump Components Off"
     }
 ]
+var wtc_q_data = {
+    labels: ['-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3', '-2', '-1', 'Now'],
+    datasets: [
+        {
+            label: "Water Quality",
+            fillColor: "rgba(0,225,255,0.2)",
+            strokeColor: "rgba(0,225,225,1)",
+            pointColor: "rgba(0,225,255,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [
+<%
+For i=1 To 11
+    response.write("document.getElementById('wtc_q" & i & "').value," & vbCrLf)
+Next
+%>
+
+]}]}
 
 Chart.defaults.global.scaleFontColor = "#FFFFFF";
 Chart.defaults.global.scaleLineColor = "rgba(255,255,255,.5)";
@@ -213,6 +236,7 @@ new Chart(document.getElementById("relay_chart").getContext("2d")).Line(relay_da
 new Chart(document.getElementById("gen_chart").getContext("2d")).Line(gen_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
 new Chart(document.getElementById("breaker_chart").getContext("2d")).Doughnut(breaker_data);
 new Chart(document.getElementById("pump_chart").getContext("2d")).Doughnut(pump_data);
+new Chart(document.getElementById("wtc_chart").getContext("2d")).Line(wtc_q_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
 </script>
 
 <!--#include file="footer.inc"-->
