@@ -8,13 +8,6 @@
 <body>
 
 <!--#include file="navbar.inc"-->
-<style>
-    body {
-        font-family: "Arial", Times, serif;
-        background-color: black;
-        color: white;
-    }
-</style>
 <br /><br />
 <h1>Welcome to National Commodity D Corporation!</h1>
 
