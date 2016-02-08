@@ -8,7 +8,14 @@
 <body>
 
 <!--#include file="navbar.inc"-->
-
+<style>
+    body {
+        font-family: "Arial", Times, serif;
+        background-color: black;
+        color: white;
+    }
+</style>
+<br /><br />
 <h1>Welcome to National Commodity D Corporation!</h1>
 
 <h2>Recent News</h2>
@@ -17,11 +24,14 @@
 <h2>Real-Time Data</h2>
 
 <canvas id="relay_chart" width="400" height="400"></canvas>
+<canvas id="gen_chart" width="400" height="400"></canvas>
+<br /><br /><br /><br /><br /><br />
 
 <% 
 Dim objShell
 Set objShell = CreateObject( "WScript.Shell" )
-For i=6 To 1 Step -1
+'If there aren't 10 value files, you will get errors on the page. Just refresh the page until all 10 files are created.
+For i=10 To 1 Step -1
     objShell.Exec "cmd /K cd C:\inetpub\wwwroot\marketing & copy /y values" & i - 1 & ".txt values" & i & ".txt"
     'Seriously? http://stackoverflow.com/a/13099520
     CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
@@ -40,7 +50,7 @@ CreateObject("WScript.Shell").Run "cmd /c ping 127.0.0.1 -n " _
 
 
 <%
-For i=0 To 6   
+For i=0 To 10   
     filename = "C:\inetpub\wwwroot\marketing\values" & i & ".txt"
     Set f = CreateObject("Scripting.FileSystemObject" )
     Set fs = f.GetFile(filename)
@@ -55,7 +65,7 @@ For i=0 To 6
     response.write("<input type='hidden' id='relay2_breaker" & i & "' value='" & s(3) & "'>" & vbCrLf)
     response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
     response.write("<input type='hidden' id='relay2_flow" & i & "' value='" & s(5) & "'>" & vbCrLf)
-    response.write("<input type='hidden' id='gen1_breaker" & i & "' value='" & s(6) & "'>" & vbCrLf)
+    response.write("<input type='hidden' id='gen1_breaker" & i & "' value='" & s(10) & "'>" & vbCrLf)
     response.write("<input type='hidden' id='gen1_generation" & i & "' value='" & s(7) & "'>" & vbCrLf)
     response.write("<input type='hidden' id='gen2_breaker" & i & "' value='" & s(8) & "'>" & vbCrLf)
     response.write("<input type='hidden' id='gen2_generation" & i & "' value='" & s(9) & "'>" & vbCrLf & vbCrLf)
@@ -65,7 +75,7 @@ response.write("<script>" & vbCrLf)
 %>
 
 var relay_data = {
-    labels: ['-6', '-5', '-4', '-3', '-2', '-1', 'Now'],
+    labels: ['-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3', '-2', '-1', 'Now'],
     datasets: [
         {
             label: "relay1_load",
@@ -77,7 +87,7 @@ var relay_data = {
             pointHighlightStroke: "rgba(220,220,220,1)",
             data: [
 <%
-For i=0 To 6
+For i=0 To 10
     response.write("document.getElementById('relay1_load" & i & "').value,")
 Next
 %>
@@ -92,7 +102,7 @@ Next
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
         data: [<% 
-For i=0 To 6
+For i=0 To 10
     response.write("document.getElementById('relay2_load" & i & "').value,")
 Next
 %>
@@ -107,7 +117,7 @@ Next
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
         data: [<% 
-For i=0 To 6
+For i=0 To 10
     response.write("document.getElementById('relay2_flow" & i & "').value,")
 Next
 %>
@@ -122,12 +132,48 @@ Next
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(151,187,205,1)",
         data: [<% 
-For i=0 To 6
+For i=0 To 10
     response.write("document.getElementById('relay2_flow" & i & "').value,")
 Next
 %>
     ]}]}
-var relay_chart = new Chart(document.getElementById("relay_chart").getContext("2d")).Line(relay_data);
+    var gen_data = {
+    labels: ['-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3', '-2', '-1', 'Now'],
+    datasets: [
+        {
+            label: "gen1_gen",
+            fillColor: "rgba(0,0,255,0.2)",
+            strokeColor: "rgba(0,0,255,1)",
+            pointColor: "rgba(0,0,255,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [
+<%
+For i=0 To 10
+    response.write("document.getElementById('gen1_generation" & i & "').value,")
+Next
+%>
+
+]},
+    {
+        label: "gen2_gen",
+        fillColor: "rgba(255,0,0,0.2)",
+        strokeColor: "rgba(255,0,0,1)",
+        pointColor: "rgba(255,0,0,1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(151,187,205,1)",
+        data: [<% 
+For i=0 To 10
+    response.write("document.getElementById('gen2_generation" & i & "').value,")
+Next
+%>
+    ]}]}
+Chart.defaults.global.scaleFontColor = "#FFFFFF";
+Chart.defaults.global.scaleLineColor = "rgba(255,255,255,.5)";
+var relay_chart = new Chart(document.getElementById("relay_chart").getContext("2d")).Line(relay_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
+var gen_chart = new Chart(document.getElementById("gen_chart").getContext("2d")).Line(gen_data, {scaleGridLineColor: "rgba(255,255,255,.25)"});
 </script>
 <!--#include file="footer.inc"-->
 </body>
