@@ -85,10 +85,12 @@ For i=1 To 11
         response.write("<input type='hidden' id='wtc_q" & i & "' value='" & 0 & "'>" & vbCrLf)
     End if
 Next
-response.write("<input type='hidden' id='breaker_up' value='" & 100 * up / 30 & "'>" & vbCrLf)
-response.write("<input type='hidden' id='breaker_down' value='" & 100 * (30 - up) / 30 & "'>" & vbCrLf)
-response.write("<input type='hidden' id='pump_health' value='" & 100 * pump_health / 200 & "'>" & vbCrLf)
-response.write("<input type='hidden' id='pump_unhealth' value='" & 100 * (200 - pump_health) / 200 & "'>" & vbCrLf)
+'Change (30|33) to (33|30) if displays wrong
+response.write("<input type='hidden' id='breaker_up' value='" & 100 * up / 33 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='breaker_down' value='" & 100 * (33 - up) / 33 & "'>" & vbCrLf)
+'Change (220|200) to (200|220) if displays wrong
+response.write("<input type='hidden' id='pump_health' value='" & 100 * pump_health / 220 & "'>" & vbCrLf)
+response.write("<input type='hidden' id='pump_unhealth' value='" & 100 * (220 - pump_health) / 220 & "'>" & vbCrLf)
 response.write("<script>" & vbCrLf)
 %>
 
