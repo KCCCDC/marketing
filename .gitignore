@@ -1,0 +1,4 @@
+values*.txt
+config.py*
+soap.log
+web.config
