@@ -66,7 +66,7 @@ For i=1 To 11
         s=Split(f.read(100), vbCrLf)
         up = up + CInt(s(0)) + CInt(s(3)) + CInt(s(6))
         pump_health = pump_health + CInt(s(10)) + CInt(s(11)) + CInt(s(12)) + CInt(s(13)) + CInt(s(14)) + CInt(s(15)) + CInt(s(16)) + CInt(s(17)) + CInt(s(18)) + CInt(s(19)) + CInt(s(20)) + CInt(s(21)) + CInt(s(22)) + CInt(s(23)) + CInt(s(24)) + CInt(s(25)) + CInt(s(26)) + CInt(s(27)) + CInt(s(28)) + CInt(s(29)) 
-        response.write(s(30))
+        
         response.write("<input type='hidden' id='relay1_load" & i & "' value='" & s(1) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay1_flow" & i & "' value='" & s(2) & "'>" & vbCrLf)
         response.write("<input type='hidden' id='relay2_load" & i & "' value='" & s(4) & "'>" & vbCrLf)
